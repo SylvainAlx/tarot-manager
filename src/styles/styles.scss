@@ -1,4 +1,10 @@
+@import "_globales";
+
 body {
+  font-family: $fontOswald;
+  .button {
+    
+  }
   header {
     h1 {
       text-align: center;
@@ -19,11 +25,26 @@ body {
     flex-direction: column;
     align-items: center;
     table {
-      border: 1px solid black;
-      th, td {
-        box-sizing: border-box;
-        border: 1px solid black;
+      border-collapse: collapse;
+      padding: 10px;
+      // border-radius: 10px;
+      text-align: center;
+      background-color: $color1;
+      td {
+        color: $color3;
       }
+      thead {
+        th {
+          background-color: $color2;
+        }
+      }
+      tbody {
+        tr:nth-child(odd) {
+          background-color: $color4;
+        }
+      }
+      
+
     }
   }
 }

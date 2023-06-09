@@ -83,15 +83,19 @@ export default function Home() {
                 return (
                   <tr key={i}>
                     <td>{date}</td>
-                    <td>{ranking.rankName}</td>
+                    <td>
+                      {ranking.rankName}
+                      <button
+                        className="button"
+                        id={ranking._id}
+                        onClick={handleClick}
+                      >
+                        ouvrir
+                      </button>
+                    </td>
                     <td>{ranking.user}</td>
                     <td>{ranking.players.length}</td>
                     <td>{ranking.games}</td>
-                    <td>
-                      <button id={ranking._id} onClick={handleClick}>
-                        VOIR
-                      </button>
-                    </td>
                   </tr>
                 );
               })}
