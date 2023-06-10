@@ -76,7 +76,6 @@ export default function Home() {
       games += rank.games;
       setStats({ ...stats, players, games });
     });
-    console.log(players);
   };
   return (
     <>
@@ -95,9 +94,9 @@ export default function Home() {
         <table>
           <thead>
             <tr>
-              <th>
+              {/* <th>
                 <MdUpdate />
-              </th>
+              </th> */}
               <th>
                 <MdList />
               </th>
@@ -118,11 +117,11 @@ export default function Home() {
           {rankings.length !== 0 ? (
             <tbody>
               {rankings.map((ranking, i) => {
-                let date = new Date(ranking.updatedAt);
-                date = date.toLocaleString();
+                // let date = new Date(ranking.updatedAt);
+                // date = date.toLocaleString();
                 return (
                   <tr key={i}>
-                    <td>{date}</td>
+                    {/* <td>{date}</td> */}
                     <td>{ranking.rankName}</td>
                     <td>{ranking.user}</td>
                     <td>{ranking.players.length} joueur(s)</td>
@@ -139,9 +138,11 @@ export default function Home() {
               })}
             </tbody>
           ) : (
-            <tr>
-              <td colSpan="6">Aucun classement créé</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td colSpan="6">Aucun classement créé</td>
+              </tr>
+            </tbody>
           )}
           <tfoot>
             <tr>
