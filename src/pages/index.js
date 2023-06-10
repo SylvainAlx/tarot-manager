@@ -1,18 +1,34 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
+import {
+  MdUpdate,
+  MdList,
+  MdAccountCircle,
+  MdSupervisedUserCircle,
+  MdOutlineDownloadDone,
+  MdEditNote,
+  MdModeEdit,
+} from "react-icons/md";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [rankings, setRankings] = useState([]);
   const [myRank, setMyRank] = useState({});
+  const [stats, setStats] = useState({
+    players: 0,
+    games: 0,
+  });
   useEffect(() => {
     getRankings();
   }, []);
   useEffect(() => {
     console.log(myRank);
   }, [myRank]);
+  useEffect(() => {
+    getStats();
+  }, [rankings]);
   const getRankings = async () => {
     try {
       const rankings = await fetch("/api/rankings", {
@@ -52,6 +68,16 @@ export default function Home() {
       console.log(error);
     }
   };
+  const getStats = () => {
+    let players = 0;
+    let games = 0;
+    rankings.forEach((rank, i) => {
+      players += rank.players.length;
+      games += rank.games;
+      setStats({ ...stats, players, games });
+    });
+    console.log(players);
+  };
   return (
     <>
       <Head>
@@ -65,17 +91,31 @@ export default function Home() {
       </Head>
       <main>
         <h2>Liste des classements</h2>
-        {rankings.length !== 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th>dernière utilisation</th>
-                <th>classement</th>
-                <th>gérant</th>
-                <th>nombre de joueurs</th>
-                <th>parties jouées</th>
-              </tr>
-            </thead>
+
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <MdUpdate />
+              </th>
+              <th>
+                <MdList />
+              </th>
+              <th>
+                <MdAccountCircle />
+              </th>
+              <th>
+                <MdSupervisedUserCircle />
+              </th>
+              <th>
+                <MdOutlineDownloadDone />
+              </th>
+              <th>
+                <MdEditNote />
+              </th>
+            </tr>
+          </thead>
+          {rankings.length !== 0 ? (
             <tbody>
               {rankings.map((ranking, i) => {
                 let date = new Date(ranking.updatedAt);
@@ -83,25 +123,35 @@ export default function Home() {
                 return (
                   <tr key={i}>
                     <td>{date}</td>
+                    <td>{ranking.rankName}</td>
+                    <td>{ranking.user}</td>
+                    <td>{ranking.players.length} joueur(s)</td>
+                    <td>{ranking.games} partie(s)</td>
                     <td>
-                      {ranking.rankName}
-                      <button
+                      <MdModeEdit
                         className="button"
                         id={ranking._id}
                         onClick={handleClick}
-                      >
-                        ouvrir
-                      </button>
+                      />
                     </td>
-                    <td>{ranking.user}</td>
-                    <td>{ranking.players.length}</td>
-                    <td>{ranking.games}</td>
                   </tr>
                 );
               })}
             </tbody>
-          </table>
-        )}
+          ) : (
+            <tr>
+              <td colSpan="6">Aucun classement créé</td>
+            </tr>
+          )}
+          <tfoot>
+            <tr>
+              <th colSpan="3">TOTAL</th>
+              <td>{stats.players} joueur(s) classé(s)</td>
+              <td>{stats.games} partie(s) jouée(s)</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
       </main>
     </>
   );
