@@ -146,7 +146,7 @@ export default function Home() {
           )}
           <tfoot>
             <tr>
-              <th colSpan="3">TOTAL</th>
+              <th colSpan="2">TOTAL</th>
               <td>{stats.players} joueur(s) classé(s)</td>
               <td>{stats.games} partie(s) jouée(s)</td>
               <td></td>
