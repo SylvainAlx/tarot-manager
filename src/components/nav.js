@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MdHome, MdAddCircleOutline } from "react-icons/md";
+import { MdList, MdHome, MdAddCircleOutline } from "react-icons/md";
 
 const Nav = () => {
   return (
@@ -11,6 +11,10 @@ const Nav = () => {
       <Link className="navLink" href="/new-ranking">
         <MdAddCircleOutline className="icon" />
         CRÉER UN CLASSEMENT
+      </Link>
+      <Link className="navLink" href="/rankings-list">
+        <MdList className="icon" />
+        LISTE DES CLASSEMENTS
       </Link>
     </nav>
   );

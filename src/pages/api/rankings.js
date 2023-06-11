@@ -11,19 +11,23 @@ const rankingAPI = async (req, res) => {
   try {
     await connectMongo();
     if (req.method === "POST" && req.body.rankName) {
-      // const createdRanking = await Ranking.create(req.body);
-      let { rankName, user, password, players, games } = req.body;
-      const salt = await bcrypt.genSalt(10);
-      const cryptedPass = await bcrypt.hash(password, salt);
-      password = cryptedPass;
-      const ranking = new Ranking({
-        rankName,
-        user,
-        password,
-        players,
-        games,
-      });
-      ranking.save().then(res.status(200).json(ranking));
+      try {
+        // const createdRanking = await Ranking.create(req.body);
+        let { rankName, user, password, players, games } = req.body;
+        const salt = await bcrypt.genSalt(10);
+        const cryptedPass = await bcrypt.hash(password, salt);
+        password = cryptedPass;
+        const ranking = await Ranking.create({
+          rankName,
+          user,
+          password,
+          players,
+          games,
+        });
+        res.status(200).json(ranking);
+      } catch (error) {
+        res.status(400).json(error);
+      }
     } else if (req.method === "POST" && typeof req.body.id) {
       try {
         const ranking = await Ranking.findOne({ _id: req.body.id });
@@ -47,6 +51,7 @@ const rankingAPI = async (req, res) => {
       } catch (err) {
         res.status(400).json({ message: "mot de passe invalide" });
       }
+    } else if (req.method === "PUT") {
     } else if (req.method === "GET") {
       const getRankings = await Ranking.find();
       res.status(200).json(getRankings);

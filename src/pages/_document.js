@@ -1,15 +1,12 @@
-import Nav from "@/components/nav";
+import Header from "@/components/Header";
 import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="fr">
       <Head />
       <body>
-        <header>
-          <h1>Tarot Manager</h1>
-          <Nav />
-        </header>
+        <Header />
         <Main />
         <NextScript />
       </body>

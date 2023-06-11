@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, mongoose } from "mongoose";
 
 const rankingSchema = new Schema(
   {
@@ -16,11 +16,27 @@ const rankingSchema = new Schema(
       type: String,
       required: true,
     },
-    players: {
-      type: Array,
-      required: true,
-    },
-    games: Number,
+    players: [
+      {
+        name: String,
+        points: Number,
+        victories: Number,
+        defeats: Number,
+      },
+    ],
+    games: [
+      {
+        hold: String,
+        winners: {
+          players: Array,
+          points: Number,
+        },
+        losers: {
+          players: Array,
+          points: Number,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
@@ -28,13 +44,5 @@ const rankingSchema = new Schema(
 );
 
 const Ranking = models.Ranking || model("Ranking", rankingSchema);
-
-//methode pour vérifier que le mot de passe envoyé correspond à celui de la BDD
-rankingSchema.methods.comparePassword = function (candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    if (err) return cb(err);
-    cb(null, isMatch);
-  });
-};
 
 export default Ranking;

@@ -1,11 +1,10 @@
 @import "_globales";
 
 body {
-  height: 100vh;
   margin: 0;
   position: relative;
   font-family: $fontOswald;
-  background-image: url("../../public/images/triangles_pattern.webp");
+  background-image: url("../../public/images/light-veneer.webp");
   .button {
     padding: 5px;
     margin: 5px;
@@ -13,7 +12,11 @@ body {
     border-radius: 50px;
   }
   header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     h1 {
+      margin: 0 auto;
       text-align: center;
     }
   }
@@ -39,15 +42,37 @@ body {
       font-size: 30px;
     }
   }
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
   main {
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-grow: 1;
+    gap: 20px;
+    form {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      background-color: $color1;
+      border-radius: 10px;
+      input {
+        width: 100%;
+        padding: 5px;
+        border-radius: 50px;
+        border:none;
+      }
+      .button {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color3;
+        font-size: 25px;
+      }
+    }
     table {
       width: 95%;
       border-collapse: collapse;

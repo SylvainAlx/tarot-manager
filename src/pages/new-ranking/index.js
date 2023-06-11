@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { MdOutlineCheck } from "react-icons/md";
 
 const NewRanking = () => {
   const [newRank, setNewRank] = useState({
     rankName: "",
     user: "",
     password: "",
-    players: [
-      { name: "", points: 0, games: 0 },
-      { name: "", points: 0, games: 0 },
-      { name: "", points: 0, games: 0 },
-    ],
+    players: [],
     games: 0,
   });
   const { push } = useRouter();
@@ -20,23 +17,6 @@ const NewRanking = () => {
     setNewRank({ ...newRank, [name]: value });
   };
 
-  const editPlayers = (e) => {
-    const rankCopy = { ...newRank };
-    rankCopy.players[e.target.id].name = e.target.value;
-    setNewRank(rankCopy);
-  };
-  const addPlayer = (e) => {
-    e.preventDefault();
-    const rankCopy = { ...newRank };
-    rankCopy.players.push({ name: "", points: 0, games: 0 });
-    setNewRank(rankCopy);
-  };
-  const deletePlayer = (e) => {
-    e.preventDefault();
-    const rankCopy = { ...newRank };
-    rankCopy.players.splice(e.target.name, 1);
-    setNewRank(rankCopy);
-  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -49,12 +29,9 @@ const NewRanking = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          if (!data.error) {
-            alert("classement créé avec succès");
-            push("/");
-          } else {
-            console.log(data.error.message);
-          }
+          console.log(data);
+          alert("classement créé avec succès");
+          push("/");
         });
     } catch (error) {
       console.log(error);
@@ -89,24 +66,9 @@ const NewRanking = () => {
             required
             placeholder="mot de passe"
           />
-          {newRank.players.map((player, i) => {
-            return (
-              <div key={i}>
-                <input
-                  onChange={editPlayers}
-                  id={i}
-                  type="text"
-                  value={player.name}
-                  placeholder={`nom joueur ${i + 1}`}
-                />
-                <button name={i} onClick={deletePlayer}>
-                  X
-                </button>
-              </div>
-            );
-          })}
-          <button onClick={addPlayer}>ajouter un joueur</button>
-          <input type="submit" value="créer le classement" />
+          <div className="button">
+            <MdOutlineCheck />
+          </div>
         </form>
       </section>
     </main>
