@@ -1,61 +1,68 @@
+import Loader from "@/components/Loader";
 import { useEffect, useState } from "react";
+import { MdDelete } from "react-icons/md";
 
 const Dashboard = () => {
   const [ranking, setRanking] = useState({});
+
   useEffect(() => {
     setRanking(JSON.parse(localStorage.getItem("ranking")));
   }, []);
+
   useEffect(() => {
     console.log(ranking);
   }, [ranking]);
-  // const editPlayers = (e) => {
-  //   const rankCopy = { ...newRank };
-  //   rankCopy.players[e.target.id].name = e.target.value;
-  //   setNewRank(rankCopy);
-  // };
-  const addPlayer = async (e) => {
-    try {
-      const name = window.prompt("nom du joueur");
-      e.preventDefault();
-      const rankCopy = { ...ranking };
-      rankCopy.players.push({
-        name,
-        points: 0,
-        games: 0,
-        victories: 0,
-        defeats: 0,
-      });
-      const createdRanking = await fetch("/api/rankings", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(rankCopy),
+
+  const updateRanking = async (rank) => {
+    const update = await fetch("/api/rankings", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(rank),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setRanking(data);
+        localStorage.setItem("ranking", JSON.stringify(rank));
       })
-        .then((res) => res.json())
-        .then((data) => {
-          setRanking(data);
-        })
-        .catch((error) => alert(error));
-    } catch (error) {
-      console.log(error);
+      .catch((error) => console.log(error));
+  };
+  const addPlayer = async (e) => {
+    e.preventDefault();
+    const name = window.prompt("nom du joueur");
+    const newPlayer = {
+      name,
+      points: 0,
+      games: 0,
+      victories: 0,
+      defeats: 0,
+    };
+    const players = [...ranking.players];
+    players.push(newPlayer);
+    const updatedRanking = { ...ranking, players };
+    updateRanking(updatedRanking);
+  };
+  const deletePlayer = async (e) => {
+    e.preventDefault();
+    const name = e.currentTarget.getAttribute("name");
+    const index = e.currentTarget.getAttribute("id");
+    if (window.confirm(`supprimer le joueur ${name} ?`)) {
+      const updatedRanking = { ...ranking };
+      updatedRanking.players.splice(index, 1);
+      updateRanking(updatedRanking);
     }
   };
-  // const deletePlayer = (e) => {
-  //   e.preventDefault();
-  //   const rankCopy = { ...newRank };
-  //   rankCopy.players.splice(e.target.name, 1);
-  //   setNewRank(rankCopy);
-  // };
   return (
     <main>
-      <h2>Tableau de bord</h2>
-      <h3>Classement : {ranking.rankName}</h3>
-      <h4>Administrateur : {ranking.user}</h4>
+      <h2>
+        Tableau des scores <em>{ranking.rankName}</em>
+      </h2>
+      <h3>Administrateur : {ranking.user}</h3>
       <table>
         <thead>
           <tr>
-            <th colSpan="4">Joueurs</th>
+            <th colSpan="5">Joueurs</th>
           </tr>
         </thead>
         <tbody>
@@ -67,6 +74,9 @@ const Dashboard = () => {
                   <td>{player.points} point(s)</td>
                   <td>{player.victories} victoire(s)</td>
                   <td>{player.defeats} défaites(s)</td>
+                  <td onClick={deletePlayer} name={player.name} id={i}>
+                    <MdDelete />
+                  </td>
                 </tr>
               );
             })}

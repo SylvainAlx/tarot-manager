@@ -11,6 +11,7 @@ import {
   MdEditNote,
   MdModeEdit,
 } from "react-icons/md";
+import Loader from "@/components/Loader";
 
 export default function Rankinks() {
   const [rankings, setRankings] = useState([]);
@@ -20,6 +21,7 @@ export default function Rankinks() {
   });
   const { push } = useRouter();
   useEffect(() => {
+    localStorage.removeItem("ranking");
     getRankings();
   }, []);
   useEffect(() => {
@@ -70,9 +72,9 @@ export default function Rankinks() {
     let players = 0;
     let games = 0;
     rankings.forEach((rank, i) => {
-      if (rank.player !== undefined) {
+      if (rank.players !== undefined) {
         players += rank.players.length;
-        games += rank.games;
+        games += rank.games.length;
         setStats({ ...stats, players, games });
       }
     });
@@ -133,7 +135,9 @@ export default function Rankinks() {
         ) : (
           <tbody>
             <tr>
-              <td colSpan="6">Aucun classement créé</td>
+              <td colSpan="6">
+                <Loader />
+              </td>
             </tr>
           </tbody>
         )}

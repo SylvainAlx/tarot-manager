@@ -8,7 +8,7 @@ const NewRanking = () => {
     user: "",
     password: "",
     players: [],
-    games: 0,
+    games: [],
   });
   const { push } = useRouter();
   const handleChange = (e) => {
@@ -31,7 +31,7 @@ const NewRanking = () => {
         .then((data) => {
           console.log(data);
           alert("classement créé avec succès");
-          push("/");
+          push("/rankings-list");
         });
     } catch (error) {
       console.log(error);
@@ -66,9 +66,9 @@ const NewRanking = () => {
             required
             placeholder="mot de passe"
           />
-          <div className="button">
+          <button className="button">
             <MdOutlineCheck />
-          </div>
+          </button>
         </form>
       </section>
     </main>

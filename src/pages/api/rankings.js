@@ -52,6 +52,15 @@ const rankingAPI = async (req, res) => {
         res.status(400).json({ message: "mot de passe invalide" });
       }
     } else if (req.method === "PUT") {
+      try {
+        const { _id, players, games } = req.body;
+        let ranking = await Ranking.findOne({ _id });
+        ranking.players = players;
+        ranking.games = games;
+        ranking.save().then((resp) => res.status(200).json(ranking));
+      } catch (err) {
+        res.status(400).json(err);
+      }
     } else if (req.method === "GET") {
       const getRankings = await Ranking.find();
       res.status(200).json(getRankings);
