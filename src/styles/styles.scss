@@ -5,7 +5,7 @@ body {
   margin: 0;
   position: relative;
   font-family: $fontOswald;
-  background-image: url("../../public/images/light-veneer.webp");
+  background-image: url("../../public/images/triangles_pattern.webp");
   .button {
     padding: 5px;
     margin: 5px;
@@ -17,11 +17,15 @@ body {
     outline: inherit;
   }
   .loader {
-    margin: 20px;
+    .spinner {
+    margin: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: spinner 2s infinite;
+    font-size: 20px;
+    animation: spinner 3s infinite linear;
+    // animation-direction: alternate;
+    }
   }
   header {
     display: flex;
@@ -55,12 +59,28 @@ body {
     }
   }
   main {
-    height: 100vh;
+    padding-bottom: 100px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-grow: 1;
     gap: 20px;
+    .newGameBackground {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #3b3a3ab0;
+    }
+    .newGame {
+      width: 80%;
+      position: absolute;
+      top: 30%;
+    }
     form {
       padding: 10px;
       display: flex;

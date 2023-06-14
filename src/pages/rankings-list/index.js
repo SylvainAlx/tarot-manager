@@ -12,9 +12,12 @@ import {
   MdModeEdit,
 } from "react-icons/md";
 import Loader from "@/components/Loader";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function Rankinks() {
   const [rankings, setRankings] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState({
     players: 0,
     games: 0,
@@ -47,17 +50,19 @@ export default function Rankinks() {
   };
   const handleClick = async (e) => {
     try {
+      const id = e.currentTarget.getAttribute("id");
       const password = window.prompt("mot de passe");
       const ranking = await fetch(`/api/rankings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: e.target.id, password }),
+        body: JSON.stringify({ id, password }),
       })
         .then((res) => res.json())
         .then((data) => {
           if (data.rankName) {
+            setLoading(true);
             localStorage.setItem("ranking", JSON.stringify(data));
             push("/dashboard");
           } else {
@@ -80,76 +85,96 @@ export default function Rankinks() {
     });
   };
   return (
-    <main>
-      <h2>Liste des classements</h2>
-
-      <table>
-        <thead>
-          <tr>
-            {/* <th>
+    <>
+      <Header />
+      <main>
+        {!loading ? (
+          <>
+            <h2>Liste des classements</h2>
+            <table>
+              <thead>
+                <tr>
+                  {/* <th>
                 <MdUpdate />
               </th> */}
-            <th>
-              <MdList />
-            </th>
-            <th>
-              <MdAccountCircle />
-            </th>
-            <th>
-              <MdSupervisedUserCircle />
-            </th>
-            <th>
-              <MdOutlineDownloadDone />
-            </th>
-            <th>
-              <MdEditNote />
-            </th>
-          </tr>
-        </thead>
-        {rankings.length !== 0 ? (
-          <tbody>
-            {rankings.map((ranking, i) => {
-              // let date = new Date(ranking.updatedAt);
-              // date = date.toLocaleString();
-              return (
-                <tr key={i}>
-                  {/* <td>{date}</td> */}
-                  <td>{ranking.rankName}</td>
-                  <td>{ranking.user}</td>
-                  <td>
-                    {ranking.players !== undefined ? ranking.players.length : 0}{" "}
-                    joueur(s)
-                  </td>
-                  <td>{ranking.games} partie(s)</td>
-                  <td>
-                    <MdModeEdit
-                      className="button"
-                      id={ranking._id}
-                      onClick={handleClick}
-                    />
-                  </td>
+                  <th>
+                    <MdList />
+                  </th>
+                  <th>
+                    <MdAccountCircle />
+                  </th>
+                  <th>
+                    <MdSupervisedUserCircle />
+                  </th>
+                  <th>
+                    <MdOutlineDownloadDone />
+                  </th>
+                  <th>
+                    <MdEditNote />
+                  </th>
                 </tr>
-              );
-            })}
-          </tbody>
+              </thead>
+              {rankings.length !== 0 ? (
+                <tbody>
+                  {rankings.map((ranking, i) => {
+                    // let date = new Date(ranking.updatedAt);
+                    // date = date.toLocaleString();
+                    return (
+                      <tr key={i}>
+                        {/* <td>{date}</td> */}
+                        <td>{ranking.rankName}</td>
+                        <td>{ranking.user}</td>
+                        <td>
+                          {ranking.players !== undefined
+                            ? ranking.players.length
+                            : 0}{" "}
+                          joueur{ranking.players.length > 1 && "s"}
+                        </td>
+                        <td>
+                          {ranking.games.length} partie
+                          {ranking.games.length > 1 && "s"}
+                        </td>
+                        <td>
+                          <MdModeEdit
+                            className="button"
+                            id={ranking._id}
+                            onClick={handleClick}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              ) : (
+                <tbody>
+                  <tr>
+                    <td colSpan="6">
+                      <Loader />
+                    </td>
+                  </tr>
+                </tbody>
+              )}
+              <tfoot>
+                <tr>
+                  <th colSpan="2">TOTAL</th>
+                  <td>
+                    {stats.players} joueur{stats.players > 1 && "s"} classé
+                    {stats.players > 1 && "s"}
+                  </td>
+                  <td>
+                    {stats.games} partie{stats.games > 1 && "s"} jouée
+                    {stats.games > 1 && "s"}
+                  </td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </>
         ) : (
-          <tbody>
-            <tr>
-              <td colSpan="6">
-                <Loader />
-              </td>
-            </tr>
-          </tbody>
+          <Loader />
         )}
-        <tfoot>
-          <tr>
-            <th colSpan="2">TOTAL</th>
-            <td>{stats.players} joueur(s) classé(s)</td>
-            <td>{stats.games} partie(s) jouée(s)</td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }

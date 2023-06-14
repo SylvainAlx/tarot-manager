@@ -6,3 +6,12 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes scaler {
+  from {
+    transform: scale(0.2);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}

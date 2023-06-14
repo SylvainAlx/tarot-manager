@@ -37,7 +37,8 @@ const rankingAPI = async (req, res) => {
             ranking.password,
             function (err, result) {
               if (err) {
-                res.status(400).json({ message: "mot de passe invalide" });
+                console.error(err);
+                return;
               }
               if (result) {
                 res.status(200).json(ranking);

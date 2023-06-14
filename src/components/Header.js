@@ -7,7 +7,6 @@ const Header = () => {
     <header>
       <Image src={tarot} width={150} alt="Jeu de tarot" />
       <h1>TAROT MANAGER</h1>
-      <Nav />
     </header>
   );
 };
