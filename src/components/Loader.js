@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { GiSpades } from "react-icons/gi";
 
 const Loader = () => {
@@ -13,13 +12,12 @@ const Loader = () => {
     return (
       <div className="loader">
         <div className="spinner">
-          {/* <AiOutlineLoading3Quarters /> */}
           <GiSpades />
         </div>
         <b>CHARGEMENT</b>
       </div>
     );
   }
-  return <p>pas de données</p>;
+  return <p>aucune information</p>;
 };
 export default Loader;
