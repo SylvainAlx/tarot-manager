@@ -16,7 +16,12 @@ body {
     cursor: pointer;
     outline: inherit;
   }
+  .icon2 {
+    color: $color2;
+    font-size: 20px;
+  }
   .loader {
+    color: $color5;
     .spinner {
     margin: 5px;
     display: flex;
@@ -146,6 +151,11 @@ body {
         th {
           color: $color3;
           font-size: 20px;
+        }
+      }
+      thead {
+        tr:nth-child(even) {
+          background-color: $color6Alpha;
         }
       }
       tbody {

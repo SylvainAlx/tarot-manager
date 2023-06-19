@@ -90,7 +90,7 @@ export default function Rankinks() {
       <main>
         {!loading ? (
           <>
-            <h2>Liste des classements</h2>
+            <h2>Liste des parties</h2>
             <table>
               <thead>
                 <tr>
@@ -131,7 +131,7 @@ export default function Rankinks() {
                           joueur{ranking.players.length > 1 && "s"}
                         </td>
                         <td>
-                          {ranking.games.length} partie
+                          {ranking.games.length} manche
                           {ranking.games.length > 1 && "s"}
                         </td>
                         <td>
@@ -162,7 +162,7 @@ export default function Rankinks() {
                     {stats.players > 1 && "s"}
                   </td>
                   <td>
-                    {stats.games} partie{stats.games > 1 && "s"} jouée
+                    {stats.games} manche{stats.games > 1 && "s"} jouée
                     {stats.games > 1 && "s"}
                   </td>
                   <td></td>

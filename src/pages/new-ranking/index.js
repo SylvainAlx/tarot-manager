@@ -32,7 +32,7 @@ const NewRanking = () => {
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          alert("classement créé avec succès");
+          alert("partie créé avec succès");
           push("/rankings-list");
         });
     } catch (error) {
@@ -44,7 +44,7 @@ const NewRanking = () => {
       <Header />
       <main>
         <section>
-          <h2>Créer un nouveau classement</h2>
+          <h2>Créer une nouvelle partie</h2>
           <form onSubmit={handleSubmit}>
             <input
               onChange={handleChange}
@@ -52,7 +52,7 @@ const NewRanking = () => {
               name="rankName"
               value={newRank.rankName}
               required
-              placeholder="nom du classement"
+              placeholder="nom de la partie"
             />
             <input
               onChange={handleChange}

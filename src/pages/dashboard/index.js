@@ -4,10 +4,12 @@ import Loader from "@/components/Loader";
 import NewGame from "@/components/NewGame";
 import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
+import { RiArrowUpDownFill } from "react-icons/ri";
 
 const Dashboard = () => {
   const [ranking, setRanking] = useState({});
   const [showNewGame, setShowNewGame] = useState(false);
+  const [sortedPoints, setSortedPoints] = useState(false);
 
   useEffect(() => {
     setRanking(JSON.parse(localStorage.getItem("ranking")));
@@ -16,6 +18,32 @@ const Dashboard = () => {
     console.log(ranking);
   }, [ranking]);
 
+  const comparer = (prop) => {
+    return (a, b) => {
+      if (sortedPoints === false) {
+        if (a[prop] > b[prop]) {
+          return -1;
+        }
+        if (a[prop] < b[prop]) {
+          return 1;
+        }
+        return 0;
+      } else {
+        if (a[prop] < b[prop]) {
+          return -1;
+        }
+        if (a[prop] > b[prop]) {
+          return 1;
+        }
+        return 0;
+      }
+    };
+  };
+  const trierTableau = (prop) => {
+    const nouveauTableau = [...ranking.players].sort(comparer(prop));
+    setRanking({ ...ranking, players: nouveauTableau });
+    setSortedPoints(!sortedPoints);
+  };
   const updateRanking = async (rank) => {
     const scores = [...ranking.players];
     scores.forEach((player, i) => {
@@ -87,12 +115,19 @@ const Dashboard = () => {
       <Header />
       <main>
         <h2>
-          Tableau des scores <b>{ranking.rankName}</b> par <b>{ranking.user}</b>
+          Partie <b>{ranking.rankName}</b> créée par <b>{ranking.user}</b>
         </h2>
         <table>
           <thead>
             <tr>
               <th colSpan="4">Joueurs</th>
+            </tr>
+            <tr>
+              <th colSpan="4" onClick={() => trierTableau("totalPoints")}>
+                <div className="icon2">
+                  <RiArrowUpDownFill />
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -108,7 +143,7 @@ const Dashboard = () => {
                         "s"}
                     </td>
                     <td>
-                      {player.totalGames} partie
+                      {player.totalGames} manche
                       {player.totalGames !== 0 &&
                         player.totalGames !== 1 &&
                         "s"}
@@ -177,7 +212,7 @@ const Dashboard = () => {
           <tfoot></tfoot>
         </table>
         <div onClick={addGame} className="button">
-          Ajouter une partie
+          Ajouter une manche
         </div>
         {showNewGame && (
           <NewGame

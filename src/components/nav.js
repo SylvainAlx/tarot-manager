@@ -10,11 +10,11 @@ const Nav = () => {
       </Link>
       <Link className="navLink" href="/new-ranking">
         <MdAddCircleOutline className="icon" />
-        CRÉER UN CLASSEMENT
+        CRÉER UNE PARTIE
       </Link>
       <Link className="navLink" href="/rankings-list">
         <MdList className="icon" />
-        LISTE DES CLASSEMENTS
+        PARTIES
       </Link>
     </nav>
   );
