@@ -5,12 +5,13 @@ import NewGame from "@/components/NewGame";
 import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { RiArrowUpDownFill } from "react-icons/ri";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
   const [ranking, setRanking] = useState({});
   const [showNewGame, setShowNewGame] = useState(false);
   const [sortedPoints, setSortedPoints] = useState(false);
-
+  const { push } = useRouter();
   useEffect(() => {
     setRanking(JSON.parse(localStorage.getItem("ranking")));
   }, []);
@@ -45,12 +46,12 @@ const Dashboard = () => {
     setSortedPoints(!sortedPoints);
   };
   const updateRanking = async (rank) => {
-    const scores = [...ranking.players];
+    const scores = [...rank.players];
     scores.forEach((player, i) => {
       player.totalPoints = 0;
       player.totalGames = 0;
     });
-    ranking.games.forEach((game, i) => {
+    rank.games.forEach((game, i) => {
       game.joueurs.forEach((joueur, j) => {
         scores.forEach((player, y) => {
           if (joueur.name === player.name) {
@@ -79,7 +80,11 @@ const Dashboard = () => {
     e.preventDefault();
     const name = window.prompt("nom du joueur");
     const players = [...ranking.players];
-    players.push(name);
+    players.push({
+      name,
+      totalPoints: 0,
+      totalGames: 0,
+    });
     const updatedRanking = { ...ranking, players };
     updateRanking(updatedRanking);
   };
@@ -104,10 +109,22 @@ const Dashboard = () => {
   const deleteGame = async (e) => {
     e.preventDefault();
     const index = e.currentTarget.getAttribute("id");
-    if (window.confirm(`supprimer la partie n°${index} ?`)) {
+    if (window.confirm(`supprimer la manche n°${Number(index) + 1} ?`)) {
       const updatedRanking = { ...ranking };
       updatedRanking.games.splice(index, 1);
       updateRanking(updatedRanking);
+    }
+  };
+  const deleteRanking = async (e) => {
+    e.preventDefault();
+    if (
+      window.confirm(
+        `Supprimer la partie ${ranking.rankName} ? Cette action est irréversible.`
+      )
+    ) {
+      updateRanking({ ...ranking, delete: true });
+      window.alert("partie supprimée");
+      push("/rankings-list");
     }
   };
   return (
@@ -117,6 +134,17 @@ const Dashboard = () => {
         <h2>
           Partie <b>{ranking.rankName}</b> créée par <b>{ranking.user}</b>
         </h2>
+        <div className="buttonContainer">
+          <div onClick={deleteRanking} className="button">
+            Supprimer la partie
+          </div>
+          <div onClick={addPlayer} className="button">
+            Ajouter un joueur
+          </div>
+          <div onClick={addGame} className="button">
+            Ajouter une manche
+          </div>
+        </div>
         <table>
           <thead>
             <tr>
@@ -164,27 +192,29 @@ const Dashboard = () => {
           </tbody>
           <tfoot></tfoot>
         </table>
-        <div onClick={addPlayer} className="button">
-          Ajouter un joueur
-        </div>
         <table>
           <thead>
             <tr>
-              <th colSpan="5">Manches</th>
+              <th colSpan="6">Manches</th>
             </tr>
           </thead>
           <tbody>
             {ranking.games !== undefined && ranking.games.length > 0 ? (
               ranking.games.map((game, i) => {
+                let preneur;
                 const joueurs = [];
                 const date = new Date(game.date);
                 game.joueurs.map((joueur, j) => {
+                  if (joueur.role === "preneur") {
+                    preneur = joueur.name;
+                  }
                   joueurs.push(joueur.name);
                 });
                 return (
                   <tr key={i}>
                     <td>{date.toLocaleDateString()}</td>
                     <td>{joueurs.join(" ")}</td>
+                    <td>{preneur}</td>
                     <td>
                       {game.contrat === 1
                         ? "Prise"
@@ -203,7 +233,7 @@ const Dashboard = () => {
               })
             ) : (
               <tr>
-                <td colSpan="5">
+                <td colSpan="6">
                   <Loader />
                 </td>
               </tr>
@@ -211,9 +241,6 @@ const Dashboard = () => {
           </tbody>
           <tfoot></tfoot>
         </table>
-        <div onClick={addGame} className="button">
-          Ajouter une manche
-        </div>
         {showNewGame && (
           <NewGame
             showNewGame={showNewGame}

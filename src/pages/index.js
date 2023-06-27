@@ -2,11 +2,13 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Head from "next/head";
 import { useEffect } from "react";
+import { GiSandsOfTime } from "react-icons/gi";
 
 export default function Home() {
   useEffect(() => {
     localStorage.removeItem("ranking");
   }, []);
+
   return (
     <>
       <Head>
@@ -21,6 +23,12 @@ export default function Home() {
       <Header />
       <main>
         <h2>Bienvenue</h2>
+        <div className="sablier">
+          <GiSandsOfTime />
+        </div>
+        <h3>
+          Application en construction, merci de patienter avant de l'utiliser
+        </h3>
       </main>
       <Footer />
     </>

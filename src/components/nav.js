@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { MdList, MdHome, MdAddCircleOutline } from "react-icons/md";
+import { GiPodium } from "react-icons/gi";
 
 const Nav = () => {
   return (
@@ -15,6 +16,10 @@ const Nav = () => {
       <Link className="navLink" href="/rankings-list">
         <MdList className="icon" />
         PARTIES
+      </Link>
+      <Link className="navLink" href="/players-ranking">
+        <GiPodium className="icon" />
+        CLASSEMENT DES JOUEURS
       </Link>
     </nav>
   );

@@ -54,11 +54,26 @@ const rankingAPI = async (req, res) => {
       }
     } else if (req.method === "PUT") {
       try {
-        const { _id, players, games } = req.body;
-        let ranking = await Ranking.findOne({ _id });
-        ranking.players = players;
-        ranking.games = games;
-        ranking.save().then((resp) => res.status(200).json(ranking));
+        if (req.body.delete === true) {
+          try {
+            const deletedElement = await Ranking.findByIdAndDelete(
+              req.body._id
+            );
+            console.log("Élément supprimé :", deletedElement);
+          } catch (error) {
+            console.error(
+              "Erreur lors de la suppression de l'élément :",
+              error
+            );
+          }
+        } else {
+          const { _id, players, games } = req.body;
+          console.log(players);
+          let ranking = await Ranking.findOne({ _id });
+          ranking.players = players;
+          ranking.games = games;
+          ranking.save().then((resp) => res.status(200).json(ranking));
+        }
       } catch (err) {
         res.status(400).json(err);
       }

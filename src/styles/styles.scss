@@ -6,6 +6,12 @@ body {
   position: relative;
   font-family: $fontOswald;
   background-image: url("../../public/images/triangles_pattern.webp");
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
   .button {
     padding: 5px;
     margin: 5px;
@@ -20,8 +26,11 @@ body {
     color: $color2;
     font-size: 20px;
   }
+  .sablier {
+    font-size: 40px;
+  }
   .loader {
-    color: $color5;
+    color: $color6;
     .spinner {
     margin: 5px;
     display: flex;
@@ -30,6 +39,9 @@ body {
     font-size: 20px;
     animation: spinner 3s infinite linear;
     // animation-direction: alternate;
+    }
+    b {
+      color: $color6;
     }
   }
   header {
@@ -43,11 +55,12 @@ body {
   }
   nav {
     width: 100%;
-    height: 50px;
+    height: 80px;
     position: fixed;
     bottom: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    align-items: center;
     gap: 20px;
     background-color: $color5;
     .navLink {
@@ -60,7 +73,7 @@ body {
       text-decoration: none;
     }
     .icon {
-      font-size: 30px;
+      font-size: 40px;
     }
   }
   main {
@@ -163,7 +176,12 @@ body {
           background-color: $color4;
         }
       }
-      
+      .loader{
+        color: $color3;
+        b {
+          color: $color3;
+        }
+      }
 
     }
   }

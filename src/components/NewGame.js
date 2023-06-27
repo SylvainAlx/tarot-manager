@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MdOutlineCheck } from "react-icons/md";
 
 const NewGame = ({ setShowNewGame, ranking, setRanking, updateRanking }) => {
   const date = new Date().valueOf();
@@ -8,11 +9,13 @@ const NewGame = ({ setShowNewGame, ranking, setRanking, updateRanking }) => {
     contrat: 1,
     bouts: 56,
     points: 0,
-    bonusAttaquant: 0,
+    petitAuBout: 0,
+    poignee: 0,
+    chelem: 0,
   });
-  useEffect(() => {
-    console.log(game);
-  }, [game]);
+  // useEffect(() => {
+  //   console.log(game);
+  // }, [game]);
 
   const handleChange = (e) => {
     const joueurs = [...game.joueurs];
@@ -61,18 +64,32 @@ const NewGame = ({ setShowNewGame, ranking, setRanking, updateRanking }) => {
   };
   const updatePlayers = () => {
     let joueurs = [...game.joueurs];
-    let score = 0;
+    let defense = 0;
+    let totalScore =
+      (25 + game.points - game.bouts + game.petitAuBout) * game.contrat +
+      game.poignee +
+      game.chelem;
     joueurs.map((player, i) => {
       if (joueurs.length < 5) {
         if (player.role === "défenseur") {
-          score +=
-            -(game.points - game.bouts + 25) * game.contrat + player.bonus;
-          joueurs[i].points =
-            -(game.points - game.bouts + 25) * game.contrat + player.bonus;
+          defense += 1;
+          if (game.points >= game.bouts) {
+            joueurs[i].points = -totalScore;
+          } else {
+            joueurs[i].points = totalScore;
+          }
+          //   -(game.points - game.bouts + 25) * game.contrat + player.bonus;
+          // joueurs[i].points =
+          //   -(game.points - game.bouts + 25) * game.contrat + player.bonus;
         }
         joueurs.map((player, i) => {
           if (player.role === "preneur") {
-            joueurs[i].points = score * -1 + player.bonus;
+            if (game.points >= game.bouts) {
+              joueurs[i].points = totalScore * defense;
+            } else {
+              joueurs[i].points = -totalScore * defense;
+            }
+            // joueurs[i].points = score * -1 + player.bonus;
           }
         });
       } else if (joueurs.length === 5) {
@@ -316,9 +333,9 @@ const NewGame = ({ setShowNewGame, ranking, setRanking, updateRanking }) => {
             max="91"
           />
         </div>
-        <div onClick={handleSubmit} className="button">
-          valider
-        </div>
+        <button onClick={handleSubmit} className="button">
+          <MdOutlineCheck />
+        </button>
       </form>
     </>
   );
