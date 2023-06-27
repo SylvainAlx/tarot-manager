@@ -19,7 +19,7 @@ const Nav = () => {
       </Link>
       <Link className="navLink" href="/players-ranking">
         <GiPodium className="icon" />
-        CLASSEMENT DES JOUEURS
+        CLASSEMENT GÉNÉRAL
       </Link>
     </nav>
   );
