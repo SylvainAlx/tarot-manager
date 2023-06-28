@@ -195,7 +195,16 @@ const Dashboard = () => {
         <table>
           <thead>
             <tr>
-              <th colSpan="6">Manches</th>
+              <th colSpan="7">Manches</th>
+            </tr>
+            <tr>
+              <th>n°</th>
+              <th>date</th>
+              <th>joueurs</th>
+              <th>preneur</th>
+              <th>contrat</th>
+              <th>réussite</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -212,6 +221,7 @@ const Dashboard = () => {
                 });
                 return (
                   <tr key={i}>
+                    <td>{i + 1}</td>
                     <td>{date.toLocaleDateString()}</td>
                     <td>{joueurs.join(" ")}</td>
                     <td>{preneur}</td>
@@ -233,7 +243,7 @@ const Dashboard = () => {
               })
             ) : (
               <tr>
-                <td colSpan="6">
+                <td colSpan="7">
                   <Loader />
                 </td>
               </tr>
