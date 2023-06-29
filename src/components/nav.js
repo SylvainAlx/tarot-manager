@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MdList, MdHome, MdAddCircleOutline } from "react-icons/md";
-import { GiPodium } from "react-icons/gi";
+import { GiPodium, GiRuleBook } from "react-icons/gi";
 
 const Nav = () => {
   return (
@@ -20,6 +20,14 @@ const Nav = () => {
       <Link className="navLink" href="/players-ranking">
         <GiPodium className="icon" />
         CLASSEMENT GÉNÉRAL
+      </Link>
+      <Link
+        className="navLink"
+        href="https://www.le-tarot.fr/regles-rapides-recapitulatif/"
+        target="_blank"
+      >
+        <GiRuleBook className="icon" />
+        RÈGLES DU JEU
       </Link>
     </nav>
   );

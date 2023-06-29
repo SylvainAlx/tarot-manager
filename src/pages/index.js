@@ -29,6 +29,20 @@ export default function Home() {
         <h3>
           Application en construction, merci de patienter avant de l'utiliser
         </h3>
+        <ul>
+          <li>
+            Tarot Manager permet de tenir des classements de parties de tarot en
+            gérant les points, les joueurs et les manches
+          </li>
+          <li>
+            Tarot Manager permet également le calcul automatique des points
+            répartis, gagnant ainsi du temps pour les joueurs en cours de partie
+          </li>
+          <li>
+            L'application inclus aussi un classement général de l'ensemble des
+            joueurs l'utilisant
+          </li>
+        </ul>
       </main>
       <Footer />
     </>

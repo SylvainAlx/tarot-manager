@@ -68,7 +68,6 @@ const rankingAPI = async (req, res) => {
           }
         } else {
           const { _id, players, games } = req.body;
-          console.log(players);
           let ranking = await Ranking.findOne({ _id });
           ranking.players = players;
           ranking.games = games;
